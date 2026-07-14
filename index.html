@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chacha Burger Shop & Cafe — Order Now</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%231f5fbf'/%3E%3Ctext x='32' y='44' font-family='Arial, sans-serif' font-weight='900' font-size='36' fill='%23ffc72c' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#1f5fbf;
+    --green-dark:#0d2a4d;
+    --green-soft:#e7f0fb;
+    --yellow:#ffc72c;
+    --yellow-deep:#e6a800;
+    --cream:#faf7ea;
+    --white:#ffffff;
+    --ink:#16241c;
+    --muted:#5c6d63;
+    --red:#e0393c;
+    --line:rgba(13,42,77,0.1);
+    --shadow: 0 16px 34px rgba(13,42,77,0.12);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    letter-spacing:0.3px;
+    text-transform:uppercase;
+    line-height:1;
+    color:var(--green-dark);
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 24px;}
+  ::selection{background:var(--yellow); color:var(--green-dark);}
+  a:focus-visible, button:focus-visible{ outline:3px solid var(--green); outline-offset:2px; }
+
+  /* ===== Header ===== */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(250,247,234,0.94);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:14px 24px; }
+  .logo{display:flex; align-items:center; gap:10px;}
+  .logo-badge{
+    width:44px; height:44px; border-radius:50%; background:var(--green);
+    display:flex; align-items:center; justify-content:center; flex:none;
+  }
+  .logo-badge span{ font-family:'Anton'; color:var(--yellow); font-size:11px; text-align:center; line-height:1.1; }
+  .logo-text{font-family:'Anton'; font-size:19px; color:var(--green-dark);}
+  .logo-text span{color:var(--green);}
+  .nav-links{display:flex; gap:28px; font-weight:700; font-size:14px; text-transform:uppercase; letter-spacing:0.4px;}
+  .nav-links a{color:var(--ink); opacity:0.8; transition:opacity .2s, color .2s;}
+  .nav-links a:hover{opacity:1; color:var(--green);}
+  .cart-btn{
+    display:flex; align-items:center; gap:8px;
+    background:var(--yellow); color:var(--green-dark);
+    border:none; padding:10px 16px; border-radius:999px;
+    font-weight:800; font-size:14px; cursor:pointer; transition:transform .15s;
+  }
+  .cart-btn:hover{transform:translateY(-1px);}
+  .cart-count{
+    background:var(--green-dark); color:var(--yellow);
+    border-radius:999px; min-width:20px; height:20px;
+    display:flex; align-items:center; justify-content:center; font-size:12px; padding:0 5px;
+  }
+  .mobile-toggle{display:none; background:none; border:none; color:var(--ink); font-size:26px; cursor:pointer;}
+
+  /* ===== Hero ===== */
+  .hero{ position:relative; padding:80px 24px 70px; overflow:hidden; }
+  .hero::before{
+    content:""; position:absolute; top:-120px; right:-120px; width:420px; height:420px;
+    background:radial-gradient(circle, rgba(31,95,191,0.16), transparent 70%); z-index:0;
+  }
+  .hero::after{
+    content:""; position:absolute; bottom:-100px; left:-100px; width:320px; height:320px;
+    background:radial-gradient(circle, rgba(255,199,44,0.22), transparent 70%); z-index:0;
+  }
+  .hero-inner{position:relative; z-index:1; max-width:1180px; margin:0 auto; display:grid; grid-template-columns:1.05fr 0.95fr; gap:44px; align-items:center;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px; color:var(--green);
+    font-weight:800; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px;
+  }
+  .eyebrow::before{content:"●"; font-size:8px;}
+  .hero h1{font-size:clamp(38px,5.6vw,66px); color:var(--green-dark);}
+  .hero h1 em{font-style:normal; color:var(--yellow); -webkit-text-stroke:1.5px var(--green-dark);}
+  .hero p{margin-top:18px; font-size:17px; max-width:460px; color:var(--muted);}
+  .hero-ctas{display:flex; gap:14px; margin-top:30px; flex-wrap:wrap;}
+  .btn-primary,.btn-secondary{
+    padding:15px 26px; border-radius:999px; font-weight:800; font-size:14px;
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; border:none;
+    transition:transform .15s, background .2s; text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .btn-primary{background:var(--yellow); color:var(--green-dark);}
+  .btn-primary:hover{transform:translateY(-2px); background:var(--yellow-deep);}
+  .btn-secondary{background:transparent; color:var(--green-dark); border:1.5px solid var(--green);}
+  .btn-secondary:hover{background:var(--green); color:var(--white);}
+
+  .hero-collage{ position:relative; justify-self:end; width:100%; max-width:420px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .hero-collage img{
+    width:100%; height:150px; object-fit:cover; border-radius:16px; border:5px solid var(--white);
+    box-shadow:var(--shadow);
+  }
+  .hero-collage .c1{ transform:rotate(-3deg) translateY(10px); }
+  .hero-collage .c2{ transform:rotate(2deg); }
+  .hero-collage .c3{ transform:rotate(2deg); }
+  .hero-collage .c4{ transform:rotate(-2deg) translateY(-8px); }
+  .hero-collage-badge{
+    position:absolute; top:-20px; left:-20px; z-index:3; width:92px; height:92px; border-radius:50%;
+    background:var(--green); display:flex; align-items:center; justify-content:center; text-align:center;
+    transform:rotate(-8deg); box-shadow:var(--shadow); animation:float 5s ease-in-out infinite;
+  }
+  @keyframes float{ 0%,100%{transform:rotate(-8deg) translateY(0);} 50%{transform:rotate(-8deg) translateY(-8px);} }
+  @media (prefers-reduced-motion: reduce){ .hero-collage-badge{animation:none;} }
+  .hero-collage-badge span{ font-family:'Anton'; color:var(--yellow); font-size:11px; line-height:1.2; }
+
+  /* ===== Section shell ===== */
+  section{padding:64px 0;}
+  .section-head{ display:flex; align-items:flex-end; justify-content:space-between; margin-bottom:32px; gap:20px; flex-wrap:wrap; }
+  .section-head h2{ font-size:clamp(28px,3.6vw,42px); }
+  .section-sub{color:var(--muted); font-size:15px; margin-top:6px; max-width:420px;}
+
+  /* ===== Deals — clean photo cards ===== */
+  .on-tint{ background:var(--green-soft); }
+  .deals-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px,1fr)); gap:22px;}
+  .deal-card{
+    background:var(--white); border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
+    border:1px solid var(--line); display:flex; flex-direction:column; transition:transform .18s;
+  }
+  .deal-card:hover{ transform:translateY(-4px); }
+  .deal-photo{ height:150px; background-size:cover; background-position:center; position:relative; }
+  .deal-tag{
+    position:absolute; top:12px; left:12px; background:var(--red); color:var(--white);
+    font-size:11px; font-weight:800; letter-spacing:0.5px; padding:5px 10px; border-radius:999px; text-transform:uppercase;
+  }
+  .deal-body{ padding:16px 18px 18px; flex:1; display:flex; flex-direction:column; }
+  .deal-name{font-weight:800; font-size:15px; margin-bottom:6px;}
+  .deal-includes{font-size:12.5px; color:var(--muted); margin-bottom:14px; line-height:1.6; flex:1;}
+  .deal-bottom{display:flex; align-items:center; justify-content:space-between; border-top:1px dashed var(--line); padding-top:14px;}
+  .deal-price{font-family:'Anton'; font-size:21px; color:var(--green-dark);}
+  .deal-save{font-size:10.5px; font-weight:700; color:var(--red); text-transform:uppercase;}
+  .deal-add{
+    background:var(--yellow); color:var(--green-dark); border:none; padding:9px 16px; border-radius:999px;
+    font-weight:800; font-size:12px; cursor:pointer; text-transform:uppercase;
+  }
+  .deal-add:hover{background:var(--yellow-deep);}
+
+  /* ===== Category spotlight ===== */
+  .spotlight-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:12px; }
+  .spotlight-card{
+    position:relative; height:170px; border-radius:16px; overflow:hidden; cursor:pointer;
+    background-size:cover; background-position:center; transition:transform .2s; box-shadow:var(--shadow);
+  }
+  .spotlight-card:hover{ transform:translateY(-4px); }
+  .spotlight-card::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,46,30,0.05) 0%, rgba(15,46,30,0.85) 100%); }
+  .spotlight-label{ position:absolute; bottom:14px; left:16px; z-index:2; font-family:'Anton'; color:var(--white); font-size:17px; }
+  .spotlight-label span{ display:block; font-family:'Work Sans'; font-weight:600; font-size:11px; color:var(--yellow); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
+  @media (max-width:720px){ .spotlight-grid{ grid-template-columns:repeat(2,1fr); } }
+
+  /* ===== Menu tabs + grid ===== */
+  .tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:30px;}
+  .tab{
+    padding:9px 18px; border-radius:999px; border:1.5px solid var(--line);
+    font-weight:700; font-size:13px; text-transform:uppercase; letter-spacing:0.4px;
+    cursor:pointer; background:var(--white); color:var(--ink); transition:all .15s;
+  }
+  .tab:hover{border-color:var(--green);}
+  .tab.active{background:var(--green); color:var(--white); border-color:var(--green);}
+  .menu-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px;}
+  .item-card{
+    background:var(--white); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
+    padding:18px; display:flex; gap:14px; align-items:flex-start; transition:transform .15s;
+  }
+  .item-card:hover{transform:translateY(-3px);}
+  .item-icon{ width:52px; height:52px; flex:none; border-radius:12px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; }
+  .item-icon svg{width:28px; height:28px;}
+  .item-body{flex:1; min-width:0;}
+  .item-top{display:flex; justify-content:space-between; gap:8px;}
+  .item-name{font-weight:700; font-size:15px;}
+  .item-size{font-size:12px; color:var(--muted); margin-top:2px; text-transform:capitalize;}
+  .item-price{font-family:'Anton'; color:var(--green); font-size:17px; white-space:nowrap;}
+  .item-add{
+    margin-top:12px; width:100%; padding:8px; border-radius:8px; border:1.5px solid var(--green);
+    background:transparent; color:var(--green); font-weight:700; font-size:13px; cursor:pointer; transition:all .15s;
+  }
+  .item-add:hover{background:var(--green); color:var(--white);}
+
+  /* ===== About ===== */
+  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
+  .about-copy p{color:var(--muted); margin-top:16px; font-size:16px; max-width:480px;}
+  .about-badges{display:flex; gap:14px; margin-top:26px; flex-wrap:wrap;}
+  .about-badge{background:var(--white); border:1px solid var(--line); border-radius:14px; padding:14px 18px; box-shadow:var(--shadow);}
+  .about-badge strong{display:block; font-family:'Anton'; color:var(--green); font-size:24px;}
+  .about-badge span{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px;}
+  .about-visual{ aspect-ratio:1/1; border-radius:20px; overflow:hidden; box-shadow:var(--shadow); border:6px solid var(--white); }
+  .about-visual img{ width:100%; height:100%; object-fit:cover; }
+
+  /* ===== Footer ===== */
+  footer{background:var(--green-dark); padding:60px 0 30px;}
+  .footer-grid{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.12);}
+  .footer-col h3{font-size:14px; letter-spacing:1px; color:var(--yellow); margin-bottom:14px;}
+  .footer-col p, .footer-col a{display:block; font-size:14px; color:rgba(250,247,234,0.75); margin-bottom:8px;}
+  .footer-col a:hover{color:var(--yellow);}
+  .footer-bottom{padding-top:22px; display:flex; justify-content:space-between; font-size:13px; color:rgba(250,247,234,0.45); flex-wrap:wrap; gap:10px;}
+
+  /* ===== Floating WhatsApp ===== */
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:60; background:#25D366; color:var(--green-dark);
+    width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    box-shadow:var(--shadow); border:none; cursor:pointer; transition:transform .2s;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  .wa-float svg{width:30px; height:30px;}
+
+  /* ===== Cart drawer ===== */
+  .overlay{ position:fixed; inset:0; background:rgba(15,46,30,0.45); z-index:70; opacity:0; pointer-events:none; transition:opacity .25s; }
+  .overlay.open{opacity:1; pointer-events:auto;}
+  .cart-drawer{
+    position:fixed; top:0; right:0; height:100%; width:400px; max-width:92vw; background:var(--white);
+    z-index:80; transform:translateX(100%); transition:transform .3s ease; display:flex; flex-direction:column;
+  }
+  .cart-drawer.open{transform:translateX(0);}
+  .cart-head{display:flex; justify-content:space-between; align-items:center; padding:20px 22px; border-bottom:1px solid var(--line);}
+  .cart-head h3{font-size:18px;}
+  .cart-close{background:none; border:none; color:var(--ink); font-size:22px; cursor:pointer;}
+  .cart-items{flex:1; overflow-y:auto; padding:16px 22px;}
+  .cart-row{display:flex; justify-content:space-between; align-items:center; padding:14px 0; border-bottom:1px solid var(--line); gap:10px;}
+  .cart-row-name{font-weight:700; font-size:14px;}
+  .cart-row-meta{font-size:12px; color:var(--muted);}
+  .qty-controls{display:flex; align-items:center; gap:10px;}
+  .qty-controls button{
+    width:26px; height:26px; border-radius:50%; border:1px solid var(--line); background:var(--white);
+    color:var(--ink); cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center;
+  }
+  .qty-controls button:hover{border-color:var(--green); color:var(--green);}
+  .cart-empty{text-align:center; color:var(--muted); padding:60px 20px; font-size:14px;}
+  .cart-foot{padding:20px 22px; border-top:1px solid var(--line);}
+  .cart-total{display:flex; justify-content:space-between; font-family:'Anton'; font-size:20px; margin-bottom:16px;}
+  .cart-total span:last-child{color:var(--green);}
+  .wa-checkout{
+    width:100%; background:#25D366; color:#08130c; border:none; padding:15px; border-radius:12px;
+    font-weight:800; font-size:15px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px;
+  }
+  .wa-checkout:hover{background:#1ebe57;}
+  .cart-note{font-size:11px; color:var(--muted); text-align:center; margin-top:10px;}
+  .loading-row{padding:40px; text-align:center; color:var(--muted); grid-column:1/-1;}
+
+  /* ===== Reveal ===== */
+  .reveal{ opacity:0; transform:translateY(24px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in-view{ opacity:1; transform:translateY(0); }
+  @media (prefers-reduced-motion: reduce){ .reveal{opacity:1; transform:none; transition:none;} }
+
+  @media (max-width: 900px){
+    .hero-inner{grid-template-columns:1fr;}
+    .hero-collage{justify-self:start; margin-top:20px;}
+    .about-grid{grid-template-columns:1fr;}
+    .about-visual{order:-1; max-width:340px;}
+    .footer-grid{grid-template-columns:1fr; gap:24px;}
+  }
+  @media (max-width: 720px){
+    .nav-links{
+      position:fixed; top:70px; left:0; right:0; background:var(--cream);
+      flex-direction:column; padding:20px 24px; gap:18px; border-bottom:1px solid var(--line);
+      transform:translateY(-130%); transition:transform .25s; opacity:0;
+    }
+    .nav-links.open{transform:translateY(0); opacity:1;}
+    .mobile-toggle{display:block;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="nav wrap">
+    <div class="logo">
+      <div class="logo-badge"><span>CHACHA</span></div>
+      <div class="logo-text">Chacha<span> Cafe</span></div>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <a href="#deals">Deals</a>
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button class="cart-btn" id="cartOpenBtn" aria-label="Open cart">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 3H5L5.4 5M5.4 5H21L19 13H7M5.4 5L7 13M7 13L5.5 15.5C5 16.5 5.7 18 7 18H19" stroke="#0f2e1e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="21" r="1.5" fill="#0f2e1e"/><circle cx="18" cy="21" r="1.5" fill="#0f2e1e"/></svg>
+        Cart <span class="cart-count" id="cartCount">0</span>
+      </button>
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">☰</button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="eyebrow">Peshawar's counter favourite</div>
+      <h1>Hot deals,<br>ordered on <em>WhatsApp.</em></h1>
+      <p>Broast, burgers, pizza, shwarma — the same menu that's been running the counter for years, now one tap away.</p>
+      <div class="hero-ctas">
+        <a href="#menu" class="btn-primary">Browse the menu</a>
+        <a href="#deals" class="btn-secondary">See today's deals</a>
+      </div>
+    </div>
+    <div class="hero-collage">
+      <div class="hero-collage-badge"><span>12 DEALS<br>LIVE NOW</span></div>
+      <img class="c1" src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Burger and fries">
+      <img class="c2" src="https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza slice">
+      <img class="c3" src="https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shwarma wrap">
+      <img class="c4" src="https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Crispy wings">
+    </div>
+  </div>
+</div>
+
+<!-- DEALS -->
+<section class="on-tint" id="deals">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">Limited time</div>
+        <h2>Chacha's deals</h2>
+        <div class="section-sub">Bundled combos, priced better than ordering piece by piece.</div>
+      </div>
+    </div>
+    <div class="deals-grid reveal" id="dealsGrid">
+      <div class="loading-row">Loading today's deals…</div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div>
+        <div class="eyebrow">The full counter</div>
+        <h2>Order straight off the menu</h2>
+      </div>
+    </div>
+    <div class="spotlight-grid reveal">
+      <div class="spotlight-card" data-jump="burger" style="background-image:url('https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600');">
+        <div class="spotlight-label">Burgers<span>Zinger, paneer &amp; more</span></div>
+      </div>
+      <div class="spotlight-card" data-jump="pizza" style="background-image:url('https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600');">
+        <div class="spotlight-label">Pizza<span>4 sizes available</span></div>
+      </div>
+      <div class="spotlight-card" data-jump="shwarma" style="background-image:url('https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600');">
+        <div class="spotlight-label">Shwarma<span>Rolled fresh</span></div>
+      </div>
+      <div class="spotlight-card" data-jump="broast" style="background-image:url('https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600');">
+        <div class="spotlight-label">Broast<span>Crispy &amp; hot</span></div>
+      </div>
+    </div>
+    <br>
+    <div class="tabs" id="tabs"></div>
+    <div class="menu-grid" id="menuGrid">
+      <div class="loading-row">Loading the menu…</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="on-tint" id="about">
+  <div class="wrap about-grid reveal">
+    <div class="about-copy">
+      <div class="eyebrow">Since the first order</div>
+      <h2>Counter-run, not corporate-run.</h2>
+      <p>Chacha Cafe started as one counter and one grill — broast on one side, the pizza oven on the other. No call centre, no delivery app markup. You message the counter directly, chacha reads it himself, and it comes out hot.</p>
+      <p>Same recipes every day. Same guy taking your order. That's the whole pitch.</p>
+      <div class="about-badges">
+        <div class="about-badge"><strong>28+</strong><span>Menu items</span></div>
+        <div class="about-badge"><strong>12</strong><span>Active deals</span></div>
+        <div class="about-badge"><strong>1</strong><span>Counter, no middlemen</span></div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <img src="https://images.pexels.com/photos/17913414/pexels-photo-17913414.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Cozy cafe counter">
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h3>CHACHA BURGER SHOP &amp; CAFE</h3>
+        <p>Broast · Burgers · Pizza · Shwarma — all off one counter, ordered straight to WhatsApp.</p>
+      </div>
+      <div class="footer-col">
+        <h3>HOURS</h3>
+        <p>Everyday — 1:00 PM to 2:00 AM</p>
+      </div>
+      <div class="footer-col">
+        <h3>REACH THE COUNTER</h3>
+        <a href="#" id="footerWaLink">Order on WhatsApp</a>
+        <p>Near Salman Bakers, Berasco Gate, Kakshal</p>
+        <p>0315 9988295</p>
+      </div>
+    </div>
+    <div class="footer-bottom wrap" style="padding-left:0; padding-right:0;">
+      <span>© <span id="year"></span> Chacha Cafe. Menu synced live from the counter.</span>
+      <span>Built for the counter, not around it.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<button class="wa-float" id="waFloat" aria-label="Order on WhatsApp">
+  <svg viewBox="0 0 32 32" fill="#0f2e1e"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.61 1.905 6.478L4 29l7.72-1.865A11.93 11.93 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.107 1.13-4.463-.233-.365A9.77 9.77 0 0 1 6.18 15c0-5.418 4.404-9.818 9.821-9.818S25.82 9.582 25.82 15 21.418 24.818 16 24.818zm5.44-7.36c-.298-.15-1.764-.87-2.038-.97-.273-.1-.472-.15-.67.15-.198.298-.767.97-.94 1.17-.174.198-.348.223-.646.075-.298-.15-1.257-.463-2.395-1.478-.885-.79-1.483-1.766-1.657-2.064-.174-.298-.019-.46.13-.608.134-.133.298-.348.447-.522.15-.174.198-.298.298-.497.1-.198.05-.373-.025-.522-.075-.15-.67-1.614-.918-2.212-.242-.582-.487-.503-.67-.512-.174-.008-.373-.01-.572-.01-.198 0-.522.075-.795.373-.273.298-1.043 1.02-1.043 2.486s1.068 2.882 1.217 3.08c.15.198 2.1 3.207 5.088 4.497.71.306 1.264.489 1.696.626.712.226 1.36.194 1.872.118.571-.085 1.764-.72 2.013-1.416.248-.696.248-1.293.174-1.417-.075-.124-.273-.198-.571-.348z"/></svg>
+</button>
+
+<!-- CART OVERLAY + DRAWER -->
+<div class="overlay" id="overlay"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-head">
+    <h3>Your order</h3>
+    <button class="cart-close" id="cartCloseBtn" aria-label="Close cart">✕</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty">Nothing in your order yet.<br>Add something from the menu.</div>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total"><span>Total</span><span id="cartTotal">Rs 0</span></div>
+    <button class="wa-checkout" id="waCheckoutBtn">
+      <svg width="18" height="18" viewBox="0 0 32 32" fill="#08130c"><path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.61 1.905 6.478L4 29l7.72-1.865A11.93 11.93 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.107 1.13-4.463-.233-.365A9.77 9.77 0 0 1 6.18 15c0-5.418 4.404-9.818 9.821-9.818S25.82 9.582 25.82 15 21.418 24.818 16 24.818z"/></svg>
+      Order on WhatsApp
+    </button>
+    <div class="cart-note">Opens WhatsApp with your order pre-filled. Confirm with the counter to finish.</div>
+  </div>
+</div>
+
+<script>
+const WHATSAPP_NUMBER = "923159988295";
+const MENU_API_URL = "https://chacha-cafe-app-nine.vercel.app/api/menu";
+
+const ICONS = {
+  burger: `<svg viewBox="0 0 24 24" fill="none"><path d="M3 10C3 7 7 5 12 5C17 5 21 7 21 10H3Z" stroke="#1f5fbf" stroke-width="1.6"/><rect x="3" y="11" width="18" height="2.2" rx="1.1" fill="#1f5fbf"/><path d="M4 15H20C20 17.5 16.5 19.5 12 19.5C7.5 19.5 4 17.5 4 15Z" stroke="#1f5fbf" stroke-width="1.6"/></svg>`,
+  pizza: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 3L21 19H3L12 3Z" stroke="#1f5fbf" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="10" r="1" fill="#1f5fbf"/><circle cx="9.5" cy="14" r="1" fill="#1f5fbf"/><circle cx="14.5" cy="14" r="1" fill="#1f5fbf"/></svg>`,
+  drinks: `<svg viewBox="0 0 24 24" fill="none"><path d="M7 3H17L16 20C16 21 15 21.5 14 21.5H10C9 21.5 8 21 8 20L7 3Z" stroke="#1f5fbf" stroke-width="1.6"/><path d="M6.5 7H17.5" stroke="#1f5fbf" stroke-width="1.4"/><path d="M18 2L19.5 9" stroke="#1f5fbf" stroke-width="1.4" stroke-linecap="round"/></svg>`,
+  shwarma: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 3C8 3 6 7 6 12C6 17 8 21 12 21C16 21 18 17 18 12C18 7 16 3 12 3Z" stroke="#1f5fbf" stroke-width="1.6"/><path d="M8 9H16M7.5 13H16.5M8.5 17H15.5" stroke="#1f5fbf" stroke-width="1.2"/></svg>`,
+  broast: `<svg viewBox="0 0 24 24" fill="none"><path d="M9 4C9 4 7 6 7 9C5 9 4 11 4 12.5C4 14 5.5 15 6.5 14.5C7 17 9 20 12 20C17 20 20 15 18 10C16.5 6.5 12.5 4 9 4Z" stroke="#1f5fbf" stroke-width="1.6"/></svg>`,
+  snacks: `<svg viewBox="0 0 24 24" fill="none"><path d="M6 8H18L16 20H8L6 8Z" stroke="#1f5fbf" stroke-width="1.6"/><path d="M8 8V5C8 3.5 9 3 10 3H14C15 3 16 3.5 16 5V8" stroke="#1f5fbf" stroke-width="1.6"/></svg>`,
+  default: `<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1f5fbf" stroke-width="1.6"/><path d="M9 12H15M12 9V15" stroke="#1f5fbf" stroke-width="1.6" stroke-linecap="round"/></svg>`
+};
+const CATEGORY_PHOTOS = {
+  burger:"https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600",
+  pizza:"https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600",
+  shwarma:"https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600",
+  broast:"https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600",
+  drinks:"https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600",
+  snacks:"https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600",
+  default:"https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600"
+};
+function normCat(cat){
+  const c = (cat||"").toLowerCase();
+  if(c.includes("burger")) return "burger";
+  if(c.includes("pizza")) return "pizza";
+  if(c.includes("drink")) return "drinks";
+  if(c.includes("shwarma")||c.includes("shawarma")) return "shwarma";
+  if(c.includes("broast")) return "broast";
+  if(c.includes("snack")) return "snacks";
+  return "default";
+}
+function labelCat(c){ return c.charAt(0).toUpperCase()+c.slice(1); }
+
+const FALLBACK = {"items":[{"id":"i-54e70899","name":"Wings","category":"broast","businessType":"cafe","price":80,"size":"large"},{"id":"i-ba44ba23","name":"Zinger piece","category":"broast","businessType":"cafe","price":200,"size":"large"},{"id":"i-67ba351b","name":"Chicken Burger","category":"burger","businessType":"burger","price":250,"size":"large"},{"id":"i-321f99a3","name":"Shami egg burger","category":"burger","businessType":"burger","price":150,"size":"large"},{"id":"i-3e3b0d7c","name":"Tower zinger cheez","category":"burger","businessType":"cafe","price":500,"size":"XL"},{"id":"i-3214e4af","name":"Zinger burger","category":"burger","businessType":"cafe","price":250,"size":"large"},{"id":"i-89731ba9","name":"Zinger cheeze","category":"burger","businessType":"cafe","price":300,"size":"large"},{"id":"i-25ba5b58","name":"chicken paneer burger","category":"burger","businessType":"burger","price":400,"size":"large"},{"id":"i-3392923a","name":"double shami egg burger","category":"burger","businessType":"burger","price":200,"size":"large"},{"id":"i-e6c66b5e","name":"paneer burger","category":"burger","businessType":"burger","price":250,"size":"large"},{"id":"i-ccf4a5e1","name":"shami burger","category":"burger","businessType":"burger","price":100,"size":"large"},{"id":"i-df12cf04","name":"shami catlus egg burger","category":"burger","businessType":"burger","price":180,"size":"large"},{"id":"i-61764c6c","name":"cold drink","category":"drink","businessType":"cafe","price":120,"size":"1 liter"},{"id":"i-632f6e03","name":"1.5 liter drink","category":"drinks","businessType":"cafe","price":150,"size":"large"},{"id":"i-bb2b7a70","name":"Coca cola","category":"drinks","businessType":"cafe","price":70,"size":"Regular"},{"id":"i-737d20e8","name":"Sting","category":"drinks","businessType":"cafe","price":70,"size":"Regular"},{"id":"i-31511316","name":"chicken tikka pizza","category":"pizza","businessType":"cafe","price":1100,"size":"large"},{"id":"i-72af5488","name":"chicken tikka pizza","category":"pizza","businessType":"cafe","price":1500,"size":"Family size"},{"id":"i-adde3263","name":"chicken tikka pizza","category":"pizza","businessType":"cafe","price":500,"size":"small"},{"id":"i-da4db754","name":"chicken tikka pizza","category":"pizza","businessType":"cafe","price":800,"size":"medium"},{"id":"i-56329a8e","name":"Shwarma","category":"shwarma","businessType":"cafe","price":150,"size":"medium"},{"id":"i-9633b804","name":"Zinger shwarma","category":"shwarma","businessType":"cafe","price":200,"size":"large"},{"id":"i-bc70ccc3","name":"shwarma","category":"shwarma","businessType":"cafe","price":200,"size":"large"},{"id":"i-fb8a71bd","name":"shwarma","category":"shwarma","businessType":"cafe","price":100,"size":"small"},{"id":"i-def6d91a","name":"catlus","category":"snack","businessType":"burger","price":40,"size":"large"},{"id":"i-da85b777","name":"paneer","category":"snack","businessType":"burger","price":50,"size":"large"},{"id":"i-32bc14a6","name":"shami kabab","category":"snack","businessType":"burger","price":50,"size":"large"},{"id":"i-81c779ee","name":"chicken roll","category":"snacks","businessType":"burger","price":70,"size":"large"}],"deals":[{"id":"d-ae628fa4","name":"Combo: medium pizza, zinger burger & egg shami burger","price":2000,"status":"active","includes":[{"itemId":"i-da4db754","qty":1},{"itemId":"i-61764c6c","qty":1},{"itemId":"i-3214e4af","qty":4},{"itemId":"i-321f99a3","qty":4}]},{"id":"d-0f626e76","name":"3 shwarma + 1 medium pizza","price":1000,"status":"active","includes":[{"itemId":"i-fb8a71bd","qty":3},{"itemId":"i-61764c6c","qty":1},{"itemId":"i-da4db754","qty":1}]},{"id":"d-41495466","name":"3 small pizzas","price":1000,"status":"active","includes":[{"itemId":"i-adde3263","qty":3}]},{"id":"d-71fcd5e0","name":"Pizza + zinger burger deal","price":1300,"status":"active","includes":[{"itemId":"i-da4db754","qty":1},{"itemId":"i-3214e4af","qty":3},{"itemId":"i-61764c6c","qty":1}]},{"id":"d-2acc87c7","name":"2 medium pizza, 4 zinger burger & 4 shwarma","price":2500,"status":"active","includes":[{"itemId":"i-3214e4af","qty":4},{"itemId":"i-9633b804","qty":4},{"itemId":"i-61764c6c","qty":1},{"itemId":"i-da4db754","qty":2}]},{"id":"d-abf96b13","name":"2 large pizzas","price":1600,"status":"active","includes":[{"itemId":"i-61764c6c","qty":1},{"itemId":"i-31511316","qty":2}]},{"id":"d-057c1b24","name":"Paneer burger, large pizza & cold drink","price":1500,"status":"active","includes":[{"itemId":"i-31511316","qty":1},{"itemId":"i-61764c6c","qty":1},{"itemId":"i-e6c66b5e","qty":4}]},{"id":"d-63601960","name":"Family deal: family pizza, 3 zinger & 3 paneer burger","price":2500,"status":"active","includes":[{"itemId":"i-3214e4af","qty":3},{"itemId":"i-e6c66b5e","qty":3},{"itemId":"i-72af5488","qty":1},{"itemId":"i-632f6e03","qty":1}]},{"id":"d-b9b248e1","name":"Chicken & paneer deal","price":550,"status":"active","includes":[{"itemId":"i-67ba351b","qty":1},{"itemId":"i-25ba5b58","qty":1},{"itemId":"i-61764c6c","qty":1}]},{"id":"d-20f6f344","name":"2 medium pizza, 4 paneer burger, 4 shwarma & 1L drink","price":2500,"status":"active","includes":[{"itemId":"i-da4db754","qty":2},{"itemId":"i-bc70ccc3","qty":4},{"itemId":"i-e6c66b5e","qty":4},{"itemId":"i-61764c6c","qty":1}]},{"id":"d-db3df443","name":"Zinger burger + egg burger combo","price":1000,"status":"active","includes":[{"itemId":"i-321f99a3","qty":4},{"itemId":"i-61764c6c","qty":1},{"itemId":"i-3214e4af","qty":3}]},{"id":"d-d573673b","name":"9x egg burger deal","price":1000,"status":"active","includes":[{"itemId":"i-321f99a3","qty":9}]},{"id":"d-fb96bdcf","name":"Chicken & paneer burger large deal","price":1000,"status":"active","includes":[{"itemId":"i-61764c6c","qty":1},{"itemId":"i-e6c66b5e","qty":2},{"itemId":"i-67ba351b","qty":2}]}]};
+
+let ITEMS = [], DEALS = [], cart = [], activeTab = "all";
+
+async function loadMenu(){
+  try{
+    const res = await fetch(MENU_API_URL);
+    if(!res.ok) throw new Error("Bad response");
+    const data = await res.json();
+    ITEMS = data.items || [];
+    DEALS = (data.deals || []).filter(d => d.status === "active");
+  }catch(e){
+    console.warn("Live menu fetch failed, using fallback snapshot.", e);
+    ITEMS = FALLBACK.items;
+    DEALS = FALLBACK.deals;
+  }
+  renderTabs(); renderMenu(); renderDeals();
+}
+
+function businessRank(item){
+  const b = (item.businessType||"").toLowerCase();
+  if(b === "cafe") return 0;
+  if(b === "burger") return 2;
+  return 1;
+}
+function sortByBusinessType(items){ return [...items].sort((a,b)=> businessRank(a) - businessRank(b)); }
+
+function renderTabs(){
+  const cats = ["all", ...new Set(ITEMS.map(i => normCat(i.category)))];
+  const tabsEl = document.getElementById("tabs");
+  tabsEl.innerHTML = cats.map(c => `<button class="tab ${c===activeTab?'active':''}" data-cat="${c}">${c==="all"?"All items":labelCat(c)}</button>`).join("");
+  tabsEl.querySelectorAll(".tab").forEach(btn=>{
+    btn.addEventListener("click", ()=>{ activeTab = btn.dataset.cat; renderTabs(); renderMenu(); });
+  });
+}
+
+function renderMenu(){
+  const grid = document.getElementById("menuGrid");
+  let filtered = activeTab==="all" ? ITEMS : ITEMS.filter(i => normCat(i.category)===activeTab);
+  filtered = sortByBusinessType(filtered);
+  if(!filtered.length){ grid.innerHTML = `<div class="loading-row">No items in this category yet.</div>`; return; }
+  grid.innerHTML = filtered.map(item=>{
+    const cat = normCat(item.category);
+    return `
+    <div class="item-card">
+      <div class="item-icon">${ICONS[cat]||ICONS.default}</div>
+      <div class="item-body">
+        <div class="item-top">
+          <div>
+            <div class="item-name">${escapeHtml(item.name)}</div>
+            <div class="item-size">${escapeHtml(item.size||"")}</div>
+          </div>
+          <div class="item-price">Rs ${item.price}</div>
+        </div>
+        <button class="item-add" data-id="${item.id}">Add to order</button>
+      </div>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll(".item-add").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const item = ITEMS.find(i=>i.id===btn.dataset.id);
+      addToCart({id:item.id, name:item.name + (item.size?` (${item.size})`:""), price:item.price, type:"item"});
+    });
+  });
+}
+
+function itemName(id){ const it = ITEMS.find(i=>i.id===id); return it ? it.name : "item"; }
+function itemCat(id){ const it = ITEMS.find(i=>i.id===id); return it ? normCat(it.category) : "default"; }
+function dealOriginalTotal(deal){
+  let total = 0, known = true;
+  deal.includes.forEach(inc=>{
+    const it = ITEMS.find(i=>i.id===inc.itemId);
+    if(it) total += it.price * inc.qty; else known = false;
+  });
+  return known ? total : null;
+}
+function renderDeals(){
+  const grid = document.getElementById("dealsGrid");
+  if(!DEALS.length){ grid.innerHTML = `<div class="loading-row">No active deals right now — check back soon.</div>`; return; }
+  grid.innerHTML = DEALS.map(deal=>{
+    const includesText = deal.includes.map(inc=> `${inc.qty}× ${itemName(inc.itemId)}`).join(", ");
+    const orig = dealOriginalTotal(deal);
+    const savings = orig && orig > deal.price ? orig - deal.price : null;
+    const photoCat = deal.includes.length ? itemCat(deal.includes[0].itemId) : "default";
+    const photo = CATEGORY_PHOTOS[photoCat] || CATEGORY_PHOTOS.default;
+    return `
+    <div class="deal-card">
+      <div class="deal-photo" style="background-image:url('${photo}');">
+        ${savings ? `<div class="deal-tag">Save Rs ${savings}</div>` : ""}
+      </div>
+      <div class="deal-body">
+        <div class="deal-name">${escapeHtml(deal.name)}</div>
+        <div class="deal-includes">${escapeHtml(includesText)}</div>
+        <div class="deal-bottom">
+          <div class="deal-price">Rs ${deal.price}</div>
+          <button class="deal-add" data-id="${deal.id}">Add deal</button>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll(".deal-add").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const deal = DEALS.find(d=>d.id===btn.dataset.id);
+      addToCart({id:deal.id, name:deal.name, price:deal.price, type:"deal"});
+    });
+  });
+}
+
+function escapeHtml(str){ return String(str).replace(/[&<>"']/g, s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s])); }
+
+function addToCart(entry){
+  const existing = cart.find(c=>c.id===entry.id);
+  if(existing){ existing.qty += 1; } else{ cart.push({...entry, qty:1}); }
+  renderCart(); openCart();
+}
+function changeQty(id, delta){
+  const row = cart.find(c=>c.id===id); if(!row) return;
+  row.qty += delta;
+  if(row.qty<=0) cart = cart.filter(c=>c.id!==id);
+  renderCart();
+}
+function cartTotal(){ return cart.reduce((sum,c)=>sum + c.price*c.qty, 0); }
+function renderCart(){
+  const itemsEl = document.getElementById("cartItems");
+  const count = cart.reduce((s,c)=>s+c.qty,0);
+  document.getElementById("cartCount").textContent = count;
+  document.getElementById("cartTotal").textContent = "Rs " + cartTotal();
+  if(!cart.length){ itemsEl.innerHTML = `<div class="cart-empty">Nothing in your order yet.<br>Add something from the menu.</div>`; return; }
+  itemsEl.innerHTML = cart.map(c=>`
+    <div class="cart-row">
+      <div>
+        <div class="cart-row-name">${escapeHtml(c.name)}</div>
+        <div class="cart-row-meta">Rs ${c.price} ${c.type==="deal"?"· deal":""}</div>
+      </div>
+      <div class="qty-controls">
+        <button data-id="${c.id}" data-d="-1">−</button><span>${c.qty}</span><button data-id="${c.id}" data-d="1">+</button>
+      </div>
+    </div>`).join("");
+  itemsEl.querySelectorAll("button[data-d]").forEach(btn=>{
+    btn.addEventListener("click", ()=> changeQty(btn.dataset.id, parseInt(btn.dataset.d)));
+  });
+}
+
+function buildWaMessage(){
+  if(!cart.length) return "Hi Chacha Cafe, I'd like to place an order:";
+  let lines = ["Hi Chacha Cafe, I'd like to order:", ""];
+  cart.forEach(c=> lines.push(`${c.qty}x ${c.name} — Rs ${c.price*c.qty}`));
+  lines.push("", `Total: Rs ${cartTotal()}`, "", "Name: ", "Pickup or Delivery: ", "Address (if delivery): ");
+  return lines.join("\n");
+}
+function waLink(){ return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWaMessage())}`; }
+
+function openCart(){ document.getElementById("cartDrawer").classList.add("open"); document.getElementById("overlay").classList.add("open"); }
+function closeCart(){ document.getElementById("cartDrawer").classList.remove("open"); document.getElementById("overlay").classList.remove("open"); }
+document.getElementById("cartOpenBtn").addEventListener("click", openCart);
+document.getElementById("cartCloseBtn").addEventListener("click", closeCart);
+document.getElementById("overlay").addEventListener("click", closeCart);
+document.getElementById("waCheckoutBtn").addEventListener("click", ()=> window.open(waLink(), "_blank"));
+document.getElementById("waFloat").addEventListener("click", ()=> window.open(waLink(), "_blank"));
+document.getElementById("footerWaLink").addEventListener("click", (e)=>{ e.preventDefault(); window.open(waLink(), "_blank"); });
+
+document.getElementById("mobileToggle").addEventListener("click", ()=>{
+  document.getElementById("navLinks").classList.toggle("open");
+});
+
+document.querySelectorAll(".spotlight-card").forEach(card=>{
+  card.addEventListener("click", ()=>{
+    activeTab = card.dataset.jump; renderTabs(); renderMenu();
+    document.getElementById("menu").scrollIntoView({behavior:"smooth", block:"start"});
+  });
+});
+
+const revealObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){ entry.target.classList.add("in-view"); revealObserver.unobserve(entry.target); }
+  });
+}, {threshold:0.15});
+document.querySelectorAll(".reveal").forEach(el=> revealObserver.observe(el));
+
+document.getElementById("year").textContent = new Date().getFullYear();
+
+loadMenu();
+</script>
+</body>
+</html>
