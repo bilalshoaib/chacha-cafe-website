@@ -108,17 +108,37 @@
   .btn-secondary{background:transparent; color:var(--green-dark); border:1.5px solid var(--green);}
   .btn-secondary:hover{background:var(--green); color:var(--white);}
 
-  .hero-collage{ position:relative; justify-self:end; width:100%; max-width:420px; display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-  .hero-collage img{
-    width:100%; height:150px; object-fit:cover; border-radius:16px; border:5px solid var(--white);
-    box-shadow:var(--shadow);
+  .hero-slider-card{
+    position:relative; width:100%; max-width:460px; aspect-ratio:4/3; border-radius:24px;
+    overflow:hidden; box-shadow:var(--shadow); border:7px solid var(--white); justify-self:end;
   }
-  .hero-collage .c1{ transform:rotate(-3deg) translateY(10px); }
-  .hero-collage .c2{ transform:rotate(2deg); }
-  .hero-collage .c3{ transform:rotate(2deg); }
-  .hero-collage .c4{ transform:rotate(-2deg) translateY(-8px); }
+  .hero-slide{
+    position:absolute; inset:0; background-size:cover; background-position:center;
+    opacity:0; animation: heroFade 16s infinite;
+  }
+  .hero-slide:nth-child(1){ animation-delay:0s; }
+  .hero-slide:nth-child(2){ animation-delay:4s; }
+  .hero-slide:nth-child(3){ animation-delay:8s; }
+  .hero-slide:nth-child(4){ animation-delay:12s; }
+  @keyframes heroFade{ 0%{opacity:0;} 4%{opacity:1;} 22%{opacity:1;} 28%{opacity:0;} 100%{opacity:0;} }
+  @media (prefers-reduced-motion: reduce){ .hero-slide{ animation:none; opacity:0; } .hero-slide:nth-child(1){ opacity:1; } }
+  .hero-slide-caption{
+    position:absolute; left:0; right:0; bottom:0; z-index:2; padding:20px 20px 16px;
+    background:linear-gradient(0deg, rgba(15,46,30,0.85) 0%, transparent 100%);
+  }
+  .hero-slide-caption span{ font-family:'Anton'; color:var(--white); font-size:18px; letter-spacing:0.3px; }
+  .hero-dots{ position:absolute; bottom:16px; right:18px; z-index:3; display:flex; gap:6px; }
+  .hero-dots i{
+    width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.5); display:block;
+    animation:dotPulse 16s infinite;
+  }
+  .hero-dots i:nth-child(1){ animation-delay:0s; }
+  .hero-dots i:nth-child(2){ animation-delay:4s; }
+  .hero-dots i:nth-child(3){ animation-delay:8s; }
+  .hero-dots i:nth-child(4){ animation-delay:12s; }
+  @keyframes dotPulse{ 0%{background:rgba(255,255,255,0.5); width:6px;} 4%{background:var(--yellow); width:18px;} 22%{background:var(--yellow); width:18px;} 28%{background:rgba(255,255,255,0.5); width:6px;} 100%{background:rgba(255,255,255,0.5); width:6px;} }
   .hero-collage-badge{
-    position:absolute; top:-20px; left:-20px; z-index:3; width:92px; height:92px; border-radius:50%;
+    position:absolute; top:-20px; left:-20px; z-index:4; width:92px; height:92px; border-radius:50%;
     background:var(--green); display:flex; align-items:center; justify-content:center; text-align:center;
     transform:rotate(-8deg); box-shadow:var(--shadow); animation:float 5s ease-in-out infinite;
   }
@@ -134,29 +154,37 @@
 
   /* ===== Deals — clean photo cards ===== */
   .on-tint{ background:var(--green-soft); }
-  .deals-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px,1fr)); gap:22px;}
+  .deals-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px,1fr)); gap:28px;}
+  .deal-wrap{ display:flex; flex-direction:column; }
   .deal-card{
-    background:var(--white); border-radius:18px; overflow:hidden; box-shadow:var(--shadow);
-    border:1px solid var(--line); display:flex; flex-direction:column; transition:transform .18s;
+    position:relative; border-radius:20px; overflow:hidden;
+    background: linear-gradient(135deg, var(--green-dark) 0%, var(--green) 65%, var(--green-dark) 100%);
+    padding:20px 20px 16px; display:flex; flex-direction:column; box-shadow:var(--shadow); min-height:300px;
   }
-  .deal-card:hover{ transform:translateY(-4px); }
-  .deal-photo{ height:150px; background-size:cover; background-position:center; position:relative; display:flex; }
-  .deal-photo-half{ flex:1; height:100%; background-size:cover; background-position:center; }
+  .deal-card::before{
+    content:""; position:absolute; top:-30%; right:-20%; width:70%; height:160%;
+    background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,0.14) 50%, transparent 60%);
+    transform:rotate(12deg); pointer-events:none;
+  }
   .deal-tag{
-    position:absolute; top:12px; left:12px; background:var(--red); color:var(--white);
-    font-size:11px; font-weight:800; letter-spacing:0.5px; padding:5px 10px; border-radius:999px; text-transform:uppercase;
+    position:absolute; top:14px; right:14px; z-index:3; background:var(--red); color:var(--white);
+    font-size:10.5px; font-weight:800; letter-spacing:0.4px; padding:5px 10px; border-radius:999px; text-transform:uppercase;
   }
-  .deal-body{ padding:16px 18px 18px; flex:1; display:flex; flex-direction:column; }
-  .deal-name{font-weight:800; font-size:15px; margin-bottom:6px;}
-  .deal-includes{font-size:12.5px; color:var(--muted); margin-bottom:14px; line-height:1.6; flex:1;}
-  .deal-bottom{display:flex; align-items:center; justify-content:space-between; border-top:1px dashed var(--line); padding-top:14px;}
-  .deal-price{font-family:'Anton'; font-size:21px; color:var(--green-dark);}
-  .deal-save{font-size:10.5px; font-weight:700; color:var(--red); text-transform:uppercase;}
-  .deal-add{
-    background:var(--yellow); color:var(--green-dark); border:none; padding:9px 16px; border-radius:999px;
-    font-weight:800; font-size:12px; cursor:pointer; text-transform:uppercase;
+  .deal-name{
+    font-family:'Anton'; color:var(--white); font-size:15px; letter-spacing:0.3px;
+    max-width:78%; position:relative; z-index:2; text-transform:uppercase; line-height:1.15;
   }
-  .deal-add:hover{background:var(--yellow-deep);}
+  .deal-price-big{ font-family:'Anton'; color:var(--yellow); font-size:44px; line-height:1; margin-top:8px; position:relative; z-index:2; }
+  .deal-price-big span{ font-size:16px; vertical-align:super; margin-right:2px; }
+  .deal-includes{ font-size:11.5px; color:rgba(255,255,255,0.65); margin-top:8px; line-height:1.5; position:relative; z-index:2; max-width:85%; }
+  .deal-photo{ margin-top:auto; padding-top:14px; height:120px; position:relative; z-index:2; display:flex; gap:6px; }
+  .deal-photo-half{ flex:1; height:100%; background-size:cover; background-position:center; border-radius:12px; box-shadow:0 10px 22px rgba(0,0,0,0.35); }
+  .deal-cta{
+    margin-top:14px; width:100%; background:var(--yellow); color:var(--green-dark); border:none;
+    padding:14px; border-radius:999px; font-family:'Anton'; font-size:14px; letter-spacing:0.6px;
+    cursor:pointer; box-shadow:var(--shadow); text-transform:uppercase; transition:transform .15s, background .2s;
+  }
+  .deal-cta:hover{ background:var(--yellow-deep); transform:translateY(-2px); }
 
   /* ===== Category spotlight ===== */
   .spotlight-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:12px; }
@@ -182,21 +210,30 @@
   .menu-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:16px;}
   .item-card{
     background:var(--white); border:1px solid var(--line); border-radius:16px; box-shadow:var(--shadow);
-    padding:18px; display:flex; gap:14px; align-items:flex-start; transition:transform .15s;
+    padding:18px; display:flex; gap:14px; align-items:flex-start; transition:transform .18s, box-shadow .18s;
   }
-  .item-card:hover{transform:translateY(-3px);}
-  .item-icon{ width:52px; height:52px; flex:none; border-radius:12px; background:var(--green-soft); display:flex; align-items:center; justify-content:center; }
-  .item-icon svg{width:28px; height:28px;}
+  .item-card:hover{transform:translateY(-4px); box-shadow:0 20px 38px rgba(13,42,77,0.18);}
+  .item-icon{
+    width:52px; height:52px; flex:none; border-radius:14px;
+    background:linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
+    display:flex; align-items:center; justify-content:center; box-shadow:0 6px 14px rgba(31,95,191,0.3);
+  }
+  .item-icon svg{width:26px; height:26px;}
+  .item-icon svg *{ stroke:#ffffff !important; }
   .item-body{flex:1; min-width:0;}
-  .item-top{display:flex; justify-content:space-between; gap:8px;}
-  .item-name{font-weight:700; font-size:15px;}
+  .item-top{display:flex; justify-content:space-between; gap:8px; align-items:flex-start;}
+  .item-name{font-weight:800; font-size:15px;}
   .item-size{font-size:12px; color:var(--muted); margin-top:2px; text-transform:capitalize;}
-  .item-price{font-family:'Anton'; color:var(--green); font-size:17px; white-space:nowrap;}
-  .item-add{
-    margin-top:12px; width:100%; padding:8px; border-radius:8px; border:1.5px solid var(--green);
-    background:transparent; color:var(--green); font-weight:700; font-size:13px; cursor:pointer; transition:all .15s;
+  .item-price{
+    font-family:'Anton'; color:var(--green-dark); background:var(--yellow); font-size:13px;
+    padding:5px 10px; border-radius:999px; white-space:nowrap; line-height:1;
   }
-  .item-add:hover{background:var(--green); color:var(--white);}
+  .item-add{
+    margin-top:12px; width:100%; padding:9px; border-radius:10px; border:none;
+    background:var(--green); color:var(--white); font-weight:800; font-size:13px; cursor:pointer;
+    text-transform:uppercase; letter-spacing:0.3px; transition:all .15s;
+  }
+  .item-add:hover{background:var(--yellow); color:var(--green-dark);}
 
   /* ===== About ===== */
   .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;}
@@ -265,7 +302,7 @@
 
   @media (max-width: 900px){
     .hero-inner{grid-template-columns:1fr;}
-    .hero-collage{justify-self:start; margin-top:20px;}
+    .hero-slider-card{justify-self:start; margin-top:20px;}
     .about-grid{grid-template-columns:1fr;}
     .about-visual{order:-1; max-width:340px;}
     .footer-grid{grid-template-columns:1fr; gap:24px;}
@@ -318,12 +355,21 @@
         <a href="#deals" class="btn-secondary">See today's deals</a>
       </div>
     </div>
-    <div class="hero-collage">
+    <div class="hero-slider-card">
       <div class="hero-collage-badge"><span>12 DEALS<br>LIVE NOW</span></div>
-      <img class="c1" src="https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Crispy chicken burger">
-      <img class="c2" src="https://images.pexels.com/photos/20115306/pexels-photo-20115306.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza slice">
-      <img class="c3" src="https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shwarma wrap">
-      <img class="c4" src="https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Crispy wings">
+      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=900');">
+        <div class="hero-slide-caption"><span>Crispy Zinger Burger</span></div>
+      </div>
+      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/20115306/pexels-photo-20115306.jpeg?auto=compress&cs=tinysrgb&w=900');">
+        <div class="hero-slide-caption"><span>Fresh Pizza, 4 Sizes</span></div>
+      </div>
+      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=900');">
+        <div class="hero-slide-caption"><span>Shwarma, Rolled Fresh</span></div>
+      </div>
+      <div class="hero-slide" style="background-image:url('https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=900');">
+        <div class="hero-slide-caption"><span>Crispy Broast Wings</span></div>
+      </div>
+      <div class="hero-dots"><i></i><i></i><i></i><i></i></div>
     </div>
   </div>
 </div>
@@ -601,22 +647,18 @@ function renderDeals(){
       ? photoCats.map(c=> `<div class="deal-photo-half" style="background-image:url('${CATEGORY_PHOTOS[c]||CATEGORY_PHOTOS.default}');"></div>`).join("")
       : `<div class="deal-photo-half" style="background-image:url('${CATEGORY_PHOTOS[photoCats[0]]||CATEGORY_PHOTOS.default}');"></div>`;
     return `
-    <div class="deal-card">
-      <div class="deal-photo">
-        ${photoHtml}
+    <div class="deal-wrap">
+      <div class="deal-card">
         ${savings ? `<div class="deal-tag">Save Rs ${savings}</div>` : ""}
-      </div>
-      <div class="deal-body">
         <div class="deal-name">${escapeHtml(deal.name)}</div>
+        <div class="deal-price-big"><span>Rs</span>${deal.price}</div>
         <div class="deal-includes">${escapeHtml(includesText)}</div>
-        <div class="deal-bottom">
-          <div class="deal-price">Rs ${deal.price}</div>
-          <button class="deal-add" data-id="${deal.id}">Add deal</button>
-        </div>
+        <div class="deal-photo">${photoHtml}</div>
       </div>
+      <button class="deal-cta" data-id="${deal.id}">Order Now</button>
     </div>`;
   }).join("");
-  grid.querySelectorAll(".deal-add").forEach(btn=>{
+  grid.querySelectorAll(".deal-cta").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       const deal = DEALS.find(d=>d.id===btn.dataset.id);
       addToCart({id:deal.id, name:deal.name, price:deal.price, type:"deal"});
