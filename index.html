@@ -140,7 +140,8 @@
     border:1px solid var(--line); display:flex; flex-direction:column; transition:transform .18s;
   }
   .deal-card:hover{ transform:translateY(-4px); }
-  .deal-photo{ height:150px; background-size:cover; background-position:center; position:relative; }
+  .deal-photo{ height:150px; background-size:cover; background-position:center; position:relative; display:flex; }
+  .deal-photo-half{ flex:1; height:100%; background-size:cover; background-position:center; }
   .deal-tag{
     position:absolute; top:12px; left:12px; background:var(--red); color:var(--white);
     font-size:11px; font-weight:800; letter-spacing:0.5px; padding:5px 10px; border-radius:999px; text-transform:uppercase;
@@ -319,8 +320,8 @@
     </div>
     <div class="hero-collage">
       <div class="hero-collage-badge"><span>12 DEALS<br>LIVE NOW</span></div>
-      <img class="c1" src="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Burger and fries">
-      <img class="c2" src="https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza slice">
+      <img class="c1" src="https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Crispy chicken burger">
+      <img class="c2" src="https://images.pexels.com/photos/20115306/pexels-photo-20115306.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Pizza slice">
       <img class="c3" src="https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Shwarma wrap">
       <img class="c4" src="https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Crispy wings">
     </div>
@@ -353,10 +354,10 @@
       </div>
     </div>
     <div class="spotlight-grid reveal">
-      <div class="spotlight-card" data-jump="burger" style="background-image:url('https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600');">
+      <div class="spotlight-card" data-jump="burger" style="background-image:url('https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=600');">
         <div class="spotlight-label">Burgers<span>Zinger, paneer &amp; more</span></div>
       </div>
-      <div class="spotlight-card" data-jump="pizza" style="background-image:url('https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600');">
+      <div class="spotlight-card" data-jump="pizza" style="background-image:url('https://images.pexels.com/photos/20115306/pexels-photo-20115306.jpeg?auto=compress&cs=tinysrgb&w=600');">
         <div class="spotlight-label">Pizza<span>4 sizes available</span></div>
       </div>
       <div class="spotlight-card" data-jump="shwarma" style="background-image:url('https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600');">
@@ -459,13 +460,13 @@ const ICONS = {
   default: `<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#1f5fbf" stroke-width="1.6"/><path d="M9 12H15M12 9V15" stroke="#1f5fbf" stroke-width="1.6" stroke-linecap="round"/></svg>`
 };
 const CATEGORY_PHOTOS = {
-  burger:"https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600",
-  pizza:"https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600",
-  shwarma:"https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=600",
-  broast:"https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600",
-  drinks:"https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=600",
-  snacks:"https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=600",
-  default:"https://images.pexels.com/photos/4109048/pexels-photo-4109048.jpeg?auto=compress&cs=tinysrgb&w=600"
+  burger:"https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=700",
+  pizza:"https://images.pexels.com/photos/20115306/pexels-photo-20115306.jpeg?auto=compress&cs=tinysrgb&w=700",
+  shwarma:"https://images.pexels.com/photos/9980764/pexels-photo-9980764.jpeg?auto=compress&cs=tinysrgb&w=700",
+  broast:"https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=700",
+  drinks:"https://images.pexels.com/photos/11354334/pexels-photo-11354334.jpeg?auto=compress&cs=tinysrgb&w=700",
+  snacks:"https://images.pexels.com/photos/32067295/pexels-photo-32067295.jpeg?auto=compress&cs=tinysrgb&w=700",
+  default:"https://images.pexels.com/photos/20115306/pexels-photo-20115306.jpeg?auto=compress&cs=tinysrgb&w=700"
 };
 function normCat(cat){
   const c = (cat||"").toLowerCase();
@@ -555,6 +556,39 @@ function dealOriginalTotal(deal){
   });
   return known ? total : null;
 }
+function dealPhotoCategory(deal){
+  const weights = {};
+  deal.includes.forEach(inc=>{
+    const it = ITEMS.find(i=>i.id===inc.itemId);
+    if(!it) return;
+    const cat = normCat(it.category);
+    if(cat === "drinks") return; // skip filler drinks so they don't skew the photo pick
+    weights[cat] = (weights[cat]||0) + inc.qty;
+  });
+  const cats = Object.keys(weights);
+  if(!cats.length){
+    const first = deal.includes[0];
+    return first ? itemCat(first.itemId) : "default";
+  }
+  cats.sort((a,b)=> weights[b]-weights[a]);
+  return cats[0];
+}
+function dealPhotoCategories(deal){
+  const weights = {};
+  deal.includes.forEach(inc=>{
+    const it = ITEMS.find(i=>i.id===inc.itemId);
+    if(!it) return;
+    const cat = normCat(it.category);
+    if(cat === "drinks") return; // skip filler drinks so they don't skew the photo pick
+    weights[cat] = (weights[cat]||0) + inc.qty;
+  });
+  let cats = Object.keys(weights).sort((a,b)=> weights[b]-weights[a]);
+  if(!cats.length){
+    const first = deal.includes[0];
+    cats = first ? [itemCat(first.itemId)] : ["default"];
+  }
+  return cats.slice(0,2); // top 2 distinct categories = combo deal shows both
+}
 function renderDeals(){
   const grid = document.getElementById("dealsGrid");
   if(!DEALS.length){ grid.innerHTML = `<div class="loading-row">No active deals right now — check back soon.</div>`; return; }
@@ -562,11 +596,14 @@ function renderDeals(){
     const includesText = deal.includes.map(inc=> `${inc.qty}× ${itemName(inc.itemId)}`).join(", ");
     const orig = dealOriginalTotal(deal);
     const savings = orig && orig > deal.price ? orig - deal.price : null;
-    const photoCat = deal.includes.length ? itemCat(deal.includes[0].itemId) : "default";
-    const photo = CATEGORY_PHOTOS[photoCat] || CATEGORY_PHOTOS.default;
+    const photoCats = dealPhotoCategories(deal);
+    const photoHtml = photoCats.length > 1
+      ? photoCats.map(c=> `<div class="deal-photo-half" style="background-image:url('${CATEGORY_PHOTOS[c]||CATEGORY_PHOTOS.default}');"></div>`).join("")
+      : `<div class="deal-photo-half" style="background-image:url('${CATEGORY_PHOTOS[photoCats[0]]||CATEGORY_PHOTOS.default}');"></div>`;
     return `
     <div class="deal-card">
-      <div class="deal-photo" style="background-image:url('${photo}');">
+      <div class="deal-photo">
+        ${photoHtml}
         ${savings ? `<div class="deal-tag">Save Rs ${savings}</div>` : ""}
       </div>
       <div class="deal-body">
