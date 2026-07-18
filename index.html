@@ -232,7 +232,35 @@
   .spotlight-label span{ display:block; font-family:'Work Sans'; font-weight:600; font-size:11px; color:var(--yellow); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
   @media (max-width:720px){ .spotlight-grid{ grid-template-columns:repeat(2,1fr); } }
 
-  /* ===== Menu tabs + grid ===== */
+  /* ===== Menu filter bar ===== */
+  .filter-bar{
+    display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:22px;
+    background:var(--white); border:1px solid var(--line); border-radius:16px; padding:14px 16px; box-shadow:var(--shadow);
+  }
+  .filter-search{
+    flex:1; min-width:180px; display:flex; align-items:center; gap:8px;
+    border:1.5px solid var(--line); border-radius:10px; padding:9px 12px;
+  }
+  .filter-search svg{ flex:none; opacity:0.5; }
+  .filter-search input{
+    border:none; outline:none; font-family:'Work Sans'; font-size:14px; width:100%; background:transparent; color:var(--ink);
+  }
+  .filter-price{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+  .filter-price input{
+    width:76px; border:1.5px solid var(--line); border-radius:8px; padding:8px 10px;
+    font-family:'Work Sans'; font-size:13px; color:var(--ink); outline:none;
+  }
+  .filter-price input:focus{ border-color:var(--green); }
+  .filter-sort select{
+    border:1.5px solid var(--line); border-radius:10px; padding:9px 12px; font-family:'Work Sans';
+    font-size:13px; color:var(--ink); background:var(--white); outline:none; cursor:pointer;
+  }
+  .filter-clear{
+    background:transparent; border:1.5px solid var(--line); border-radius:10px; padding:9px 14px;
+    font-size:13px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .15s;
+  }
+  .filter-clear:hover{ border-color:var(--red); color:var(--red); }
+  @media (max-width: 640px){ .filter-bar{ flex-direction:column; align-items:stretch; } }
   .tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:30px;}
   .tab{
     padding:9px 18px; border-radius:999px; border:1.5px solid var(--line);
@@ -418,6 +446,24 @@
         <div class="section-sub">Bundled combos, priced better than ordering piece by piece.</div>
       </div>
     </div>
+    <div class="filter-bar">
+      <div class="filter-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#5c6d63" stroke-width="2"/><path d="M20 20L16.5 16.5" stroke="#5c6d63" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="text" id="dealSearchInput" placeholder="Search deals...">
+      </div>
+      <div class="filter-price">
+        Rs <input type="number" id="dealPriceMin" placeholder="Min" min="0"> – <input type="number" id="dealPriceMax" placeholder="Max" min="0">
+      </div>
+      <div class="filter-sort">
+        <select id="dealSortSelect">
+          <option value="recommended">Recommended</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="savings-desc">Biggest Savings</option>
+        </select>
+      </div>
+      <button class="filter-clear" id="dealFilterClear">Clear filters</button>
+    </div>
     <div class="deals-grid" id="dealsGrid">
       <div class="loading-row">Loading today's deals…</div>
     </div>
@@ -448,6 +494,24 @@
       </div>
     </div>
     <br>
+    <div class="filter-bar">
+      <div class="filter-search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#5c6d63" stroke-width="2"/><path d="M20 20L16.5 16.5" stroke="#5c6d63" stroke-width="2" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="Search the menu...">
+      </div>
+      <div class="filter-price">
+        Rs <input type="number" id="priceMin" placeholder="Min" min="0"> – <input type="number" id="priceMax" placeholder="Max" min="0">
+      </div>
+      <div class="filter-sort">
+        <select id="sortSelect">
+          <option value="recommended">Recommended</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="name-asc">Name: A to Z</option>
+        </select>
+      </div>
+      <button class="filter-clear" id="filterClear">Clear filters</button>
+    </div>
     <div class="tabs" id="tabs"></div>
     <div class="menu-grid" id="menuGrid">
       <div class="loading-row">Loading the menu…</div>
@@ -610,8 +674,26 @@ function renderTabs(){
 function renderMenu(){
   const grid = document.getElementById("menuGrid");
   let filtered = activeTab==="all" ? ITEMS : ITEMS.filter(i => normCat(i.category)===activeTab);
-  filtered = sortByBusinessType(filtered);
-  if(!filtered.length){ grid.innerHTML = `<div class="loading-row">No items in this category yet.</div>`; return; }
+
+  const searchEl = document.getElementById("searchInput");
+  const minEl = document.getElementById("priceMin");
+  const maxEl = document.getElementById("priceMax");
+  const sortEl = document.getElementById("sortSelect");
+  const searchTerm = searchEl ? searchEl.value.trim().toLowerCase() : "";
+  const minPrice = minEl && minEl.value !== "" ? parseFloat(minEl.value) : null;
+  const maxPrice = maxEl && maxEl.value !== "" ? parseFloat(maxEl.value) : null;
+  const sortBy = sortEl ? sortEl.value : "recommended";
+
+  if(searchTerm){ filtered = filtered.filter(i => i.name.toLowerCase().includes(searchTerm)); }
+  if(minPrice !== null && !isNaN(minPrice)){ filtered = filtered.filter(i => i.price >= minPrice); }
+  if(maxPrice !== null && !isNaN(maxPrice)){ filtered = filtered.filter(i => i.price <= maxPrice); }
+
+  if(sortBy === "price-asc"){ filtered = [...filtered].sort((a,b)=> a.price - b.price); }
+  else if(sortBy === "price-desc"){ filtered = [...filtered].sort((a,b)=> b.price - a.price); }
+  else if(sortBy === "name-asc"){ filtered = [...filtered].sort((a,b)=> a.name.localeCompare(b.name)); }
+  else { filtered = sortByBusinessType(filtered); }
+
+  if(!filtered.length){ grid.innerHTML = `<div class="loading-row">No items match your filters — try widening the search or price range.</div>`; return; }
   grid.innerHTML = filtered.map(item=>{
     const cat = normCat(item.category);
     return `
@@ -683,10 +765,34 @@ function dealPhotoCategories(deal){
 function renderDeals(){
   const grid = document.getElementById("dealsGrid");
   if(!DEALS.length){ grid.innerHTML = `<div class="loading-row">No active deals right now — check back soon.</div>`; return; }
-  grid.innerHTML = DEALS.map(deal=>{
-    const includesText = deal.includes.map(inc=> `${inc.qty}× ${itemName(inc.itemId)}`).join(", ");
+
+  const searchEl = document.getElementById("dealSearchInput");
+  const minEl = document.getElementById("dealPriceMin");
+  const maxEl = document.getElementById("dealPriceMax");
+  const sortEl = document.getElementById("dealSortSelect");
+  const searchTerm = searchEl ? searchEl.value.trim().toLowerCase() : "";
+  const minPrice = minEl && minEl.value !== "" ? parseFloat(minEl.value) : null;
+  const maxPrice = maxEl && maxEl.value !== "" ? parseFloat(maxEl.value) : null;
+  const sortBy = sortEl ? sortEl.value : "recommended";
+
+  let deals = DEALS.map(deal=>{
     const orig = dealOriginalTotal(deal);
-    const savings = orig && orig > deal.price ? orig - deal.price : null;
+    const savings = orig && orig > deal.price ? orig - deal.price : 0;
+    return { deal, savings };
+  });
+
+  if(searchTerm){ deals = deals.filter(d => d.deal.name.toLowerCase().includes(searchTerm)); }
+  if(minPrice !== null && !isNaN(minPrice)){ deals = deals.filter(d => d.deal.price >= minPrice); }
+  if(maxPrice !== null && !isNaN(maxPrice)){ deals = deals.filter(d => d.deal.price <= maxPrice); }
+
+  if(sortBy === "price-asc"){ deals.sort((a,b)=> a.deal.price - b.deal.price); }
+  else if(sortBy === "price-desc"){ deals.sort((a,b)=> b.deal.price - a.deal.price); }
+  else if(sortBy === "savings-desc"){ deals.sort((a,b)=> b.savings - a.savings); }
+
+  if(!deals.length){ grid.innerHTML = `<div class="loading-row">No deals match your filters — try widening the search or price range.</div>`; return; }
+
+  grid.innerHTML = deals.map(({deal, savings})=>{
+    const includesText = deal.includes.map(inc=> `${inc.qty}× ${itemName(inc.itemId)}`).join(", ");
     const photoCats = dealPhotoCategories(deal);
     const photoHtml = photoCats.length > 1
       ? photoCats.map(c=> `<div class="deal-photo-half" style="background-image:url('${CATEGORY_PHOTOS[c]||CATEGORY_PHOTOS.default}');"></div>`).join("")
@@ -766,6 +872,30 @@ document.getElementById("footerWaLink").addEventListener("click", (e)=>{ e.preve
 
 document.getElementById("mobileToggle").addEventListener("click", ()=>{
   document.getElementById("navLinks").classList.toggle("open");
+});
+
+document.getElementById("searchInput").addEventListener("input", renderMenu);
+document.getElementById("priceMin").addEventListener("input", renderMenu);
+document.getElementById("priceMax").addEventListener("input", renderMenu);
+document.getElementById("sortSelect").addEventListener("change", renderMenu);
+document.getElementById("filterClear").addEventListener("click", ()=>{
+  document.getElementById("searchInput").value = "";
+  document.getElementById("priceMin").value = "";
+  document.getElementById("priceMax").value = "";
+  document.getElementById("sortSelect").value = "recommended";
+  renderMenu();
+});
+
+document.getElementById("dealSearchInput").addEventListener("input", renderDeals);
+document.getElementById("dealPriceMin").addEventListener("input", renderDeals);
+document.getElementById("dealPriceMax").addEventListener("input", renderDeals);
+document.getElementById("dealSortSelect").addEventListener("change", renderDeals);
+document.getElementById("dealFilterClear").addEventListener("click", ()=>{
+  document.getElementById("dealSearchInput").value = "";
+  document.getElementById("dealPriceMin").value = "";
+  document.getElementById("dealPriceMax").value = "";
+  document.getElementById("dealSortSelect").value = "recommended";
+  renderDeals();
 });
 
 document.querySelectorAll(".spotlight-card").forEach(card=>{
