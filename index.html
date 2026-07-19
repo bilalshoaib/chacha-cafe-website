@@ -6,11 +6,11 @@
 <title>Chacha Burger Shop & Cafe — Order Now</title>
 <meta name="description" content="Chacha Burger Shop & Cafe in Peshawar — broast, burgers, pizza & shwarma near Salman Bakers, Berasco Gate, Kakshal. Order straight to WhatsApp, open 1PM–2AM daily.">
 <meta name="keywords" content="Chacha Cafe, Chacha Burger, Peshawar burger, Kakshal food, broast Peshawar, pizza Peshawar, shwarma Peshawar, WhatsApp order food Peshawar">
-<link rel="canonical" href="https://chachacafe.pk/">
+<link rel="canonical" href="https://chacahcafe.com/">
 <meta property="og:title" content="Chacha Burger Shop & Cafe — Order Now">
 <meta property="og:description" content="Broast, burgers, pizza & shwarma in Peshawar. Order straight to WhatsApp.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://chachacafe.pk/">
+<meta property="og:url" content="https://chacahcafe.com/">
 <meta property="og:image" content="https://images.pexels.com/photos/70497/pexels-photo-70497.jpeg?auto=compress&cs=tinysrgb&w=1200">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
@@ -34,8 +34,36 @@
     "opens": "13:00",
     "closes": "02:00"
   },
-  "menu": "https://chachacafe.pk/#menu",
+  "menu": "https://chacahcafe.com/#menu",
   "acceptsReservations": "False"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Where is Chacha Cafe located in Peshawar?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Chacha Cafe is located near Salman Bakers, Berasco Gate, in Kakshal, Peshawar." }
+    },
+    {
+      "@type": "Question",
+      "name": "What food does Chacha Cafe serve?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Broast, burgers, pizza, and shwarma, made fresh off the counter, plus regular combo deals." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I order from Chacha Cafe?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Order directly on WhatsApp at 0315 9988295 through the website's menu and cart." }
+    },
+    {
+      "@type": "Question",
+      "name": "What are Chacha Cafe's timings?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Open every day from 1:00 PM to 2:00 AM." }
+    }
+  ]
 }
 </script>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%231f5fbf'/%3E%3Ctext x='32' y='44' font-family='Arial, sans-serif' font-weight='900' font-size='36' fill='%23ffc72c' text-anchor='middle'%3EC%3C/text%3E%3C/svg%3E">
@@ -234,33 +262,53 @@
 
   /* ===== Menu filter bar ===== */
   .filter-bar{
-    display:flex; flex-wrap:wrap; gap:12px; align-items:center; margin-bottom:22px;
-    background:var(--white); border:1px solid var(--line); border-radius:16px; padding:14px 16px; box-shadow:var(--shadow);
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:22px;
+    background:var(--white); border:1px solid var(--line); border-radius:18px; padding:12px; box-shadow:var(--shadow);
   }
   .filter-search{
-    flex:1; min-width:180px; display:flex; align-items:center; gap:8px;
-    border:1.5px solid var(--line); border-radius:10px; padding:9px 12px;
+    flex:1; min-width:200px; display:flex; align-items:center; gap:10px;
+    background:var(--green-soft); border:1.5px solid transparent; border-radius:999px; padding:10px 16px;
+    transition:border-color .15s, background .15s;
   }
-  .filter-search svg{ flex:none; opacity:0.5; }
+  .filter-search:focus-within{ border-color:var(--green); background:var(--white); }
+  .filter-search svg{ flex:none; }
+  .filter-search svg circle, .filter-search svg path{ stroke:var(--green); }
   .filter-search input{
-    border:none; outline:none; font-family:'Work Sans'; font-size:14px; width:100%; background:transparent; color:var(--ink);
+    border:none; outline:none; font-family:'Work Sans'; font-weight:500; font-size:14px; width:100%;
+    background:transparent; color:var(--ink);
   }
-  .filter-price{ display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+  .filter-search input::placeholder{ color:var(--muted); }
+
+  .filter-price{
+    display:flex; align-items:center; gap:8px; background:var(--cream); border-radius:999px;
+    padding:7px 14px; border:1.5px solid transparent; transition:border-color .15s;
+  }
+  .filter-price:focus-within{ border-color:var(--yellow-deep); }
+  .filter-price .price-tag-icon{ flex:none; }
+  .filter-price span.sep{ color:var(--muted); font-size:12px; font-weight:700; }
   .filter-price input{
-    width:76px; border:1.5px solid var(--line); border-radius:8px; padding:8px 10px;
-    font-family:'Work Sans'; font-size:13px; color:var(--ink); outline:none;
+    width:64px; border:none; background:transparent; outline:none;
+    font-family:'Anton'; font-size:13px; color:var(--green-dark); text-align:center;
   }
-  .filter-price input:focus{ border-color:var(--green); }
+  .filter-price input::placeholder{ font-family:'Work Sans'; font-weight:600; color:var(--muted); font-size:12px; }
+
   .filter-sort select{
-    border:1.5px solid var(--line); border-radius:10px; padding:9px 12px; font-family:'Work Sans';
-    font-size:13px; color:var(--ink); background:var(--white); outline:none; cursor:pointer;
+    -webkit-appearance:none; appearance:none;
+    border:1.5px solid var(--line); border-radius:999px; padding:9px 34px 9px 16px;
+    font-family:'Work Sans'; font-weight:700; font-size:13px; color:var(--green-dark); background:var(--white);
+    outline:none; cursor:pointer; transition:border-color .15s;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M6 9L12 15L18 9' stroke='%231f5fbf' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center; background-size:16px;
   }
+  .filter-sort select:focus{ border-color:var(--green); }
+
   .filter-clear{
-    background:transparent; border:1.5px solid var(--line); border-radius:10px; padding:9px 14px;
-    font-size:13px; font-weight:700; color:var(--muted); cursor:pointer; transition:all .15s;
+    display:flex; align-items:center; gap:6px;
+    background:transparent; border:none; border-radius:999px; padding:9px 14px;
+    font-family:'Work Sans'; font-size:13px; font-weight:700; color:var(--red); cursor:pointer; transition:background .15s;
   }
-  .filter-clear:hover{ border-color:var(--red); color:var(--red); }
-  @media (max-width: 640px){ .filter-bar{ flex-direction:column; align-items:stretch; } }
+  .filter-clear:hover{ background:rgba(224,57,60,0.08); }
+  @media (max-width: 640px){ .filter-bar{ flex-direction:column; align-items:stretch; } .filter-price, .filter-sort select, .filter-clear{ justify-content:center; } }
   .tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:30px;}
   .tab{
     padding:9px 18px; border-radius:999px; border:1.5px solid var(--line);
@@ -307,7 +355,19 @@
   .about-visual{ aspect-ratio:1/1; border-radius:20px; overflow:hidden; box-shadow:var(--shadow); border:6px solid var(--white); }
   .about-visual img{ width:100%; height:100%; object-fit:cover; }
 
-  /* ===== Footer ===== */
+  /* ===== FAQ ===== */
+  .faq-list{ max-width:760px; margin:0 auto; }
+  .faq-item{ background:var(--white); border:1px solid var(--line); border-radius:14px; margin-bottom:12px; box-shadow:var(--shadow); overflow:hidden; }
+  .faq-q{
+    width:100%; text-align:left; background:none; border:none; padding:18px 20px;
+    display:flex; justify-content:space-between; align-items:center; gap:12px; cursor:pointer;
+    font-family:'Work Sans'; font-weight:700; font-size:15px; color:var(--green-dark);
+  }
+  .faq-q svg{ flex:none; transition:transform .2s; }
+  .faq-item.open .faq-q svg{ transform:rotate(180deg); }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .25s ease; }
+  .faq-item.open .faq-a{ max-height:200px; }
+  .faq-a p{ padding:0 20px 18px; color:var(--muted); font-size:14px; line-height:1.6; }
   footer{background:var(--green-dark); padding:60px 0 30px;}
   .footer-grid{display:grid; grid-template-columns:1.2fr 1fr 1fr; gap:40px; padding-bottom:36px; border-bottom:1px solid rgba(255,255,255,0.12);}
   .footer-col h3{font-size:14px; letter-spacing:1px; color:var(--yellow); margin-bottom:14px;}
@@ -393,6 +453,7 @@
       <a href="#deals">Deals</a>
       <a href="#menu">Menu</a>
       <a href="#about">About</a>
+      <a href="#faq">FAQ</a>
       <a href="#contact">Contact</a>
     </nav>
     <div style="display:flex; align-items:center; gap:10px;">
@@ -452,7 +513,8 @@
         <input type="text" id="dealSearchInput" placeholder="Search deals...">
       </div>
       <div class="filter-price">
-        Rs <input type="number" id="dealPriceMin" placeholder="Min" min="0"> – <input type="number" id="dealPriceMax" placeholder="Max" min="0">
+        <svg class="price-tag-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 12L12 20L4 12V4H12L20 12Z" stroke="#e6a800" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.5" fill="#e6a800"/></svg>
+        <input type="number" id="dealPriceMin" placeholder="Min" min="0"><span class="sep">–</span><input type="number" id="dealPriceMax" placeholder="Max" min="0">
       </div>
       <div class="filter-sort">
         <select id="dealSortSelect">
@@ -462,7 +524,10 @@
           <option value="savings-desc">Biggest Savings</option>
         </select>
       </div>
-      <button class="filter-clear" id="dealFilterClear">Clear filters</button>
+      <button class="filter-clear" id="dealFilterClear">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="#e0393c" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Clear
+      </button>
     </div>
     <div class="deals-grid" id="dealsGrid">
       <div class="loading-row">Loading today's deals…</div>
@@ -500,7 +565,8 @@
         <input type="text" id="searchInput" placeholder="Search the menu...">
       </div>
       <div class="filter-price">
-        Rs <input type="number" id="priceMin" placeholder="Min" min="0"> – <input type="number" id="priceMax" placeholder="Max" min="0">
+        <svg class="price-tag-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M20 12L12 20L4 12V4H12L20 12Z" stroke="#e6a800" stroke-width="2" stroke-linejoin="round"/><circle cx="8" cy="8" r="1.5" fill="#e6a800"/></svg>
+        <input type="number" id="priceMin" placeholder="Min" min="0"><span class="sep">–</span><input type="number" id="priceMax" placeholder="Max" min="0">
       </div>
       <div class="filter-sort">
         <select id="sortSelect">
@@ -510,7 +576,10 @@
           <option value="name-asc">Name: A to Z</option>
         </select>
       </div>
-      <button class="filter-clear" id="filterClear">Clear filters</button>
+      <button class="filter-clear" id="filterClear">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M6 6L18 18M18 6L6 18" stroke="#e0393c" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Clear
+      </button>
     </div>
     <div class="tabs" id="tabs"></div>
     <div class="menu-grid" id="menuGrid">
@@ -534,12 +603,46 @@
       </div>
     </div>
     <div class="about-visual">
-      <img src="https://images.pexels.com/photos/17913414/pexels-photo-17913414.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Cozy cafe counter">
+      <img src="https://images.pexels.com/photos/17913414/pexels-photo-17913414.jpeg?auto=compress&cs=tinysrgb&w=1200" alt="Chacha Cafe counter in Kakshal, Peshawar">
     </div>
   </div>
 </section>
 
 <!-- CONTACT / FOOTER -->
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Good to know</div>
+        <h2>Frequently asked</h2>
+      </div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">Where is Chacha Cafe located in Peshawar?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#1f5fbf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a"><p>Chacha Cafe is located near Salman Bakers, Berasco Gate, in Kakshal, Peshawar — right on the main road, easy to find.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What food does Chacha Cafe serve?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#1f5fbf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a"><p>Broast, burgers, pizza, and shwarma — all made fresh off the same counter, plus regular combo deals that bundle items together at a lower price.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">How do I order from Chacha Cafe?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#1f5fbf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a"><p>Browse the menu or deals on this site, add items to your cart, and tap "Order on WhatsApp" — it opens a pre-filled message straight to the counter at 0315 9988295.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">What are Chacha Cafe's timings?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#1f5fbf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a"><p>Open every day from 1:00 PM to 2:00 AM.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">Does Chacha Cafe have pizza and burger deals in Peshawar?<svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9L12 15L18 9" stroke="#1f5fbf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <div class="faq-a"><p>Yes — check the Deals section above for current combo offers on pizza, burgers, and shwarma, updated regularly.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer id="contact">
   <div class="wrap">
     <div class="footer-grid">
@@ -872,6 +975,12 @@ document.getElementById("footerWaLink").addEventListener("click", (e)=>{ e.preve
 
 document.getElementById("mobileToggle").addEventListener("click", ()=>{
   document.getElementById("navLinks").classList.toggle("open");
+});
+
+document.querySelectorAll(".faq-q").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    btn.closest(".faq-item").classList.toggle("open");
+  });
 });
 
 document.getElementById("searchInput").addEventListener("input", renderMenu);
